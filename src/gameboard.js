@@ -1,20 +1,10 @@
 import { Ship } from "./ship";
 
 export class Gameboard {
-  constructor() {
+  constructor(size) {
     this.ships = 0;
-    this.columns = {
-      1: {},
-      2: {},
-      3: {},
-      4: {},
-      5: {},
-      6: {},
-      7: {},
-      8: {},
-      9: {},
-      10: {},
-    };
+    this.columns = {};
+    this.createFields(size);
   }
 
   placeShip(column, row, length, direction) {
@@ -31,16 +21,13 @@ export class Gameboard {
     for (let i = 0; i < ship.length; i++) {
       const x = direction === "horizontal" ? column + i : column;
       const y = direction === "vertical" ? row + i : row;
-      this.columns[x][y] = {
-        hasShip: true,
-        ship: ship,
-        isHit: false,
-      };
+      this.columns[x][y].hasShip = true;
+      this.columns[x][y].ship = ship;
     }
   }
 
   checkIfTaken(column, row) {
-    return this.columns[column][row];
+    return this.columns[column][row].hasShip;
   }
 
   receiveAttack(column, row) {
@@ -62,5 +49,16 @@ export class Gameboard {
 
   allShipsSunk() {
     return this.ships > 0 ? false : true;
+  }
+
+  createFields(size) {
+    for (let i = 1; i <= size; i++) {
+      if (!this.columns[i]) {
+        this.columns[i] = {};
+      }
+      for (let j = 0; j < size; j++) {
+        this.columns[i][j] = { hasShip: false, isHit: false, ship: null };
+      }
+    }
   }
 }
