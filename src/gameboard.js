@@ -1,4 +1,3 @@
-import { displayBoard } from "./display.js";
 import { Ship } from "./ship.js";
 
 export class Gameboard {
@@ -37,11 +36,6 @@ export class Gameboard {
       }
     }
     return true;
-  }
-
-  attackListener(field) {
-    const coord = field.id.split("-");
-    this.receiveAttack(coord[0], coord[1]);
   }
 
   receiveAttack(x, y) {

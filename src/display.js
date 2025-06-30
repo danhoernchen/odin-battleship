@@ -1,7 +1,16 @@
-export function displayBoard(player) {
-  const playerDiv = document.getElementById(`gameboard-${player.name}`);
+export function displayGame(game) {
+  displayBoard(game.playerOne, game, game.attacked === game.playerOne);
+  displayBoard(game.playerTwo, game, game.attacked === game.playerTwo);
+}
+
+export function updateGame() {}
+
+export function displayBoard(player, game, active) {
+  const gameDiv = document.getElementById("game-container");
+  const playerDiv = document.createElement(`div`);
+  playerDiv.classList.add("gameboard", player.name);
   const boardContainer = document.createElement("div");
-  boardContainer.classList.add("boardContainer");
+  boardContainer.classList.add("board-container", `${player.name}`);
   const board = player.board;
   for (let key in board.columns) {
     const column = board.columns[key];
@@ -16,12 +25,19 @@ export function displayBoard(player) {
       fieldDiv.id = `${key}-${fieldKey}`;
       fieldDiv.setAttribute("ship", field.hasShip);
       fieldDiv.setAttribute("hit", field.isHit);
-      fieldDiv.addEventListener("click", (el) => {
-        player.receiveAttack(el.currentTarget);
-      });
+      if (active) {
+        fieldDiv.addEventListener("click", (el) => {
+          game.attack(el.currentTarget);
+        });
+      }
       row.append(fieldDiv);
     }
+    playerDiv.append(row);
   }
-  playerDiv.innerHTML = "";
-  playerDiv.append(boardContainer);
+  const exists = document.querySelector(`.${player.name}`);
+  if (exists) {
+    exists.replaceWith(playerDiv);
+  } else {
+    gameDiv.append(playerDiv);
+  }
 }

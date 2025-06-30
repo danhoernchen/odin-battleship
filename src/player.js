@@ -11,13 +11,7 @@ export class Player {
     this.board.placeShip(x, y, size, direction);
   }
 
-  attack(x, y, otherPlayer) {
-    otherPlayer.board.receiveAttack(x, y);
-    displayBoard(otherPlayer);
-  }
-  receiveAttack(field) {
-    const coords = field.id.split("-");
-    this.board.receiveAttack(coords[0], coords[1]);
-    displayBoard(this);
+  receiveAttack(x, y) {
+    this.board.receiveAttack(x, y);
   }
 }
